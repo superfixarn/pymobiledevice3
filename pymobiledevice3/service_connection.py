@@ -9,6 +9,7 @@ import xml
 from enum import Enum
 from typing import Any, Optional
 
+
 import IPython
 from pygments import formatters, highlight, lexers
 
@@ -346,7 +347,7 @@ class ServiceConnection:
         :param certfile: The path to the certificate file.
         :param keyfile: The path to the key file (optional).
         """
-        self.socket = create_context(certfile, keyfile=keyfile).wrap_socket(self.socket)
+        self.socket = create_secure_context(certfile, keyfile=keyfile).wrap_socket(self.socket)
 
     async def aio_ssl_start(self, certfile: str, keyfile: Optional[str] = None) -> None:
         """
@@ -357,7 +358,7 @@ class ServiceConnection:
         """
         self.reader, self.writer = await asyncio.open_connection(
             sock=self.socket,
-            ssl=create_context(certfile, keyfile=keyfile),
+            ssl=create_secure_context(certfile, keyfile=keyfile),
             server_hostname=''
         )
 
